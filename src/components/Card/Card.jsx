@@ -2,15 +2,15 @@ import { useState, react } from "react";
 import styled from "styled-components";
 import { FaRegStar } from "react-icons/fa";
 
-function Card({}) {
+function Card({ album, albums }) {
   return (
     <CardWrapper>
       <CardHeader>
-        <CardImg src="https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/40/c6/df/40c6df4d-1897-8602-7a97-36c399049baa/190374824859.jpg/1200x1200bb.jpg" />
+        <CardImg src={album.image} />
         <Info>
-          <Title>Rozes</Title>
-          <p style={{ margin: 0 }}>Hangin' on</p>
-          <p style={{ margin: 0 }}>2016</p>
+          <Title>{album.artist}</Title>
+          <p style={{ margin: 0 }}>{album.title}</p>
+          <p style={{ margin: 0 }}>{album.year}</p>
         </Info>
       </CardHeader>
       <CardFooter>
@@ -24,6 +24,25 @@ function Card({}) {
             <Star />
           </div>
         </CardRating>
+        <CardSuggestions>
+          <h5 style={{ margin: 0 }}>Album suggestion:</h5>
+          <CardAlbumsGallery>
+            {albums.map((suggestedAlbum, i) =>
+              suggestedAlbum !== album &&
+              suggestedAlbum.artist === album.artist ? (
+                <CardAlbumSmall
+                  key={i + "-" + suggestedAlbum.title + "sug" + album.title}
+                  suggestedAlbum={suggestedAlbum}
+                >
+                  <CardImgSmall src={suggestedAlbum.image} />
+                  <h5 style={{ margin: 0 }}>{suggestedAlbum.title}</h5>
+                </CardAlbumSmall>
+              ) : (
+                ""
+              )
+            )}
+          </CardAlbumsGallery>
+        </CardSuggestions>
       </CardFooter>
     </CardWrapper>
   );
@@ -50,7 +69,7 @@ const CardWrapper = styled(StyledFlexColumn)`
   width: 29%;
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px #8080802b;
-  background-color:white;
+  background-color: white;
 `;
 const CardHeader = styled(StyledFlexRow)`
   width: 100%;
@@ -77,4 +96,20 @@ const CardRating = styled(StyledFlexRow)`
 const CardImg = styled.img`
   width: 30%;
   border-radius: 10px 0px 0px 0px;
+`;
+const CardImgSmall = styled.img`
+  width: 100%;
+  border-radius: 10px;
+`;
+const CardSuggestions = styled(StyledFlexColumn)`
+  width: 100%;
+  padding: 1rem;
+`;
+const CardAlbumsGallery = styled(StyledFlexRow)`
+justify-content: flex-start`;
+const CardAlbumSmall = styled(StyledFlexColumn)`
+  width: 22%;
+  align-items: center;
+  text-align:center;
+  margin:1rem;
 `;
